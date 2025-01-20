@@ -12,11 +12,11 @@ class IDUtils:
 
     @staticmethod
     def generate_unique_id(
-            prefix: str = "",
-            length: int = 20,
-            use_time: bool = False,
-            use_random: bool = True,
-            delimiter: str = "-",
+        prefix: str = "",
+        length: int = 20,
+        use_time: bool = False,
+        use_random: bool = True,
+        delimiter: str = "-",
     ) -> str:
         """
         Generates a unique ID based on specified parameters.

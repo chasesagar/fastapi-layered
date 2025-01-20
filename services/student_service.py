@@ -40,14 +40,14 @@ class StudentService:
     """
 
     def __init__(
-            self,
-            schema_transformer: StudentSchemaTransformerType = StudentSchemaTransformer(),
-            sql_transformer: StudentSchemaTransformerType = StudentSchemaTransformer(),
-            # TODO: Implement SQL Transformer
-            ddb_transformer: StudentSchemaTransformerType = StudentSchemaTransformer(),
-            # TODO: Implement DDB Transformer
-            student_sql_dao: StudentSQLDAO = Depends(get_students_sql_dao),
-            student_ddb_dao: StudentDDBDAO = Depends(get_students_ddb_dao),
+        self,
+        schema_transformer: StudentSchemaTransformerType = StudentSchemaTransformer(),
+        sql_transformer: StudentSchemaTransformerType = StudentSchemaTransformer(),
+        # TODO: Implement SQL Transformer
+        ddb_transformer: StudentSchemaTransformerType = StudentSchemaTransformer(),
+        # TODO: Implement DDB Transformer
+        student_sql_dao: StudentSQLDAO = Depends(get_students_sql_dao),
+        student_ddb_dao: StudentDDBDAO = Depends(get_students_ddb_dao),
     ):
         self.schema_transformer = schema_transformer
         self.sql_transformer = sql_transformer
@@ -56,7 +56,7 @@ class StudentService:
         self.student_ddb_dao = student_ddb_dao
 
     async def create_student(
-            self, schema: StudentRequestSchema
+        self, schema: StudentRequestSchema
     ) -> StudentResponseSchema:
         """
         Create a new student record

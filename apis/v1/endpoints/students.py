@@ -13,8 +13,8 @@ router = APIRouter(prefix="/students", tags=["students"])
     "", status_code=status.HTTP_201_CREATED, response_model=StudentResponseSchema
 )
 async def create_student(
-        student_schema: StudentRequestSchema,
-        service: StudentService = Depends(get_student_service),
+    student_schema: StudentRequestSchema,
+    service: StudentService = Depends(get_student_service),
 ) -> StudentResponseSchema:
     """
     Create a new student.
