@@ -3,10 +3,13 @@ from models.common.location import Location
 from transformers.base_transformers import BaseSchemaTransformer
 
 
-class LocationSchemaTransformer(BaseSchemaTransformer[LocationSchema, Location]):
+class LocationSchemaTransformer(
+    BaseSchemaTransformer[LocationSchema, LocationSchema, Location]
+):
     """
     Transformer for converting between LocationSchema Schema and Location BLModel.
     """
 
-    schema_class = LocationSchema
+    input_schema_class = LocationSchema
+    output_schema_class = LocationSchema
     business_model_class = Location

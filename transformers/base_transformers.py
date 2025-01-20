@@ -5,7 +5,8 @@ from pydantic import BaseModel
 
 BusinessT = TypeVar("BusinessT", bound=BaseModel)
 DaoModelT = TypeVar("DaoModelT", bound=BaseModel)
-SchemaT = TypeVar("SchemaT", bound=BaseModel)
+InputSchemaT = TypeVar("InputSchemaT", bound=BaseModel)
+OutputSchemaT = TypeVar("OutputSchemaT", bound=BaseModel)
 EnumT = TypeVar("EnumT", bound=Enum)
 
 
@@ -71,13 +72,14 @@ class BaseDaoTransformer(Generic[BusinessT, DaoModelT]):
         return self.business_model_class.model_validate(dao_model)
 
 
-class BaseSchemaTransformer(Generic[SchemaT, BusinessT]):
+class BaseSchemaTransformer(Generic[InputSchemaT, OutputSchemaT, BusinessT]):
     """
     Base Schema Transformer with default implementations.
     Provides automatic transformation for simple cases while allowing overrides for complex ones.
     """
 
-    schema_class: Type[SchemaT]
+    input_schema_class: Type[InputSchemaT]
+    output_schema_class: Type[OutputSchemaT]
     business_model_class: Type[BusinessT]
 
     @staticmethod
@@ -103,23 +105,23 @@ class BaseSchemaTransformer(Generic[SchemaT, BusinessT]):
         """
         self.exclude_fields = exclude_fields or set()
 
-    def to_business_model(self, schema: SchemaT) -> BusinessT:
+    def to_business_model(self, input_schema: InputSchemaT) -> BusinessT:
         """
         Default implementation for schema to business model transformation.
         Override this method for custom transformation logic.
 
         Args:
-            schema: The schema instance to transform.
+            input_schema: The input schema instance to transform.
         """
         if not self.business_model_class:
             raise ValueError(
                 "`business_model_class` must be defined in the transformer"
             )
 
-        data = schema.model_dump(exclude=self.exclude_fields)
+        data = input_schema.model_dump(exclude=self.exclude_fields)
         return self.business_model_class(**data)
 
-    def to_schema(self, business_model: BusinessT) -> SchemaT:
+    def to_schema(self, business_model: BusinessT) -> OutputSchemaT:
         """
         Default implementation for business model to schema transformation.
         Override this method for custom transformation logic.
@@ -127,8 +129,8 @@ class BaseSchemaTransformer(Generic[SchemaT, BusinessT]):
         Args:
             business_model: The business model instance to transform.
         """
-        if not self.schema_class:
-            raise ValueError("`schema_class` must be defined in the transformer")
+        if not self.output_schema_class:
+            raise ValueError("`output_schema_class` must be defined in the transformer")
 
         data = business_model.model_dump(exclude=self.exclude_fields)
-        return self.schema_class(**data)
+        return self.output_schema_class(**data)

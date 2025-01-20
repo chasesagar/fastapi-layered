@@ -12,12 +12,15 @@ from models.students import Student, _StudentSpecialNeeds, _StudentParent
 from transformers.base_transformers import BaseSchemaTransformer
 
 
-class StudentSchemaTransformer(BaseSchemaTransformer[StudentResponseSchema, Student]):
+class StudentSchemaTransformer(
+    BaseSchemaTransformer[StudentRequestSchema, StudentResponseSchema, Student]
+):
     """
     Transformer for converting between Student BLModel and StudentSchema Schema.
     """
 
-    schema_class = StudentResponseSchema
+    input_schema_class = StudentRequestSchema
+    output_schema_class = StudentResponseSchema
     business_model_class = Student
 
     def to_business_model(self, schema: StudentRequestSchema) -> Student:

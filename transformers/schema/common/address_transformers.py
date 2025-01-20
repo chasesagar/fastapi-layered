@@ -3,12 +3,15 @@ from models.common.address import Address
 from transformers.base_transformers import BaseSchemaTransformer
 
 
-class AddressSchemaTransformer(BaseSchemaTransformer[AddressSchema, Address]):
+class AddressSchemaTransformer(
+    BaseSchemaTransformer[AddressSchema, AddressSchema, Address]
+):
     """
     Transformer for converting between AddressSchema Schema and Address BLModel.
     """
 
-    schema_class = AddressSchema
+    input_schema_class = AddressSchema
+    output_schema_class = AddressSchema
     business_model_class = Address
 
     def __init__(self):
